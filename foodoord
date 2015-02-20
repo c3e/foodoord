@@ -49,6 +49,10 @@ if __name__ == "__main__":
 	def signal_handler(signal, frame):
 		listener.deactivate()
 		os.remove("/var/run/foodoord.pipe")
+		try:
+			urllib2.urlopen(url+'&status=closed', timeout=2)
+		except:
+			pass
 		sys.exit(0)
 
 	def set_led(color):
