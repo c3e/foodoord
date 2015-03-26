@@ -15,6 +15,8 @@ parser = SafeConfigParser()
 parser.read('/etc/door.conf')
 
 url = parser.get('door_firstlevel', 'status_url')
+old_api = parser.get('door_firstlevel_old', 'status_url')
+
 
 #Definitions for output
 LED_RED=6
@@ -42,17 +44,34 @@ if __name__ == "__main__":
 			pifacedigital.relays[RELAYS_UNLOCK].toggle()
 			#print 'got doorbell'
 
+	def close_button(event):
+		global STATUS 
+		STATUS = False
+		try:
+			urllib2.urlopen(url+'door=aerie&locked=1', timeout=2)
+			urllib2.urlopen(old_api+'&status=closed', timeout=2)
+		except:
+			pass
+
+		set_led(RED)
+
+
 	listener = pifacedigitalio.InputEventListener()
 	listener.register(0, pifacedigitalio.IODIR_RISING_EDGE, doorbell, settle_time=10)
+	listener.register(1, pifacedigitalio.IODIR_RISING_EDGE, close_button, settle_time=5)
 	listener.activate()
 
 	def signal_handler(signal, frame):
 		listener.deactivate()
 		os.remove("/var/run/foodoord.pipe")
+
 		try:
-			urllib2.urlopen(url+'&status=closed', timeout=2)
+			urllib2.urlopen(url+'&door=aerie&locked=1', timeout=2)
+			urllib2.urlopen(old_api+'&status=closed', timeout=2)
 		except:
 			pass
+				
+		set_led(RED)
 		sys.exit(0)
 
 	def set_led(color):
@@ -92,14 +111,11 @@ if __name__ == "__main__":
 				pifacedigital.relays[RELAYS_LOCK].toggle()
 				time.sleep(1)
 				pifacedigital.relays[RELAYS_LOCK].toggle()
-				STATUS=False
+				STATUS = False
 
 				try:
-					urllib2.urlopen(url+'&status=closed', timeout=2)
-				except:
-					pass
-				try:
-					urllib2.urlopen("http://10.42.1.73/door/close", timeout=2)
+					urllib2.urlopen(url+'&door=aerie&locked=1', timeout=2)
+					urllib2.urlopen(old_api+'&status=closed', timeout=2)
 				except:
 					pass
 				
@@ -113,12 +129,8 @@ if __name__ == "__main__":
 				if (STATUS==False):
 					
 					try:
-						urllib2.urlopen(url+'&status=open', timeout=2)
-					except:
-						pass
-
-					try:
-						urllib2.urlopen('http://10.42.1.73/door/open', timeout=2)
+						urllib2.urlopen(url+'&door=aerie&locked=0', timeout=2)
+						urllib2.urlopen(old_api+'&status=open', timeout=2)
 					except:
 						pass
 
