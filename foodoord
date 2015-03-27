@@ -48,7 +48,7 @@ if __name__ == "__main__":
 		global STATUS 
 		STATUS = False
 		try:
-			urllib2.urlopen(url+'door=aerie&locked=1', timeout=2)
+			urllib2.urlopen(url+'&door=aerie&locked=1', timeout=2)
 			urllib2.urlopen(old_api+'&status=closed', timeout=2)
 		except:
 			pass
