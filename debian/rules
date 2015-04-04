@@ -1,0 +1,12 @@
+#!/usr/bin/make -f
+# See debhelper(7) (uncomment to enable)
+# output every command that modifies files on the build system.
+#DH_VERBOSE = 1
+
+%:
+	dh $@ --with=python2
+
+override_dh_installinit:
+	mkdir debian/foodoord/etc/init.d
+	cp foodoord_initd debian/foodoord/etc/init.d/foodoord
+	dh_installinit --onlyscripts

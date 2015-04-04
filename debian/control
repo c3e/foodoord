@@ -1,0 +1,15 @@
+Source: foodoord
+Section: net
+Priority: optional
+Maintainer: gammlaa <gammlaa@chaospott.de>
+Build-Depends: debhelper (>= 9), dh-python, python
+Standards-Version: 3.9.6
+Homepage: https://github.com/c3e/foodoord
+
+Package: foodoord
+Architecture: all
+X-Python-Version: any
+Depends: ${misc:Depends}, adduser, python-pifacedigitalio
+Description: Türschließsystem des foobar e.V.
+ Simsalabim!
+

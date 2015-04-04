@@ -1,0 +1,5 @@
+foodoord.conf		etc
+foodoor			usr/sbin
+foodoord		usr/sbin
+foodoor-ssh-wrapper	usr/sbin
+foodoor-update-keydb	usr/sbin
