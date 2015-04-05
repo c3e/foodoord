@@ -25,5 +25,6 @@ do
 printf "command=\"/usr/sbin/foodoor.sh ${action}\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding " >> ${outfile}
 cat "${keyfile}" >> ${outfile}
 done
-install -b -S .last -o ${action} -g nogroup -m 0600 ${outfile} /home/${action}/.ssh/authorized_keys
+install -d -o ${action} -g nogroup -m 0700 /var/lib/foodoor/${action}/.ssh
+install -b -S .last -o ${action} -g nogroup -m 0600 ${outfile} /var/lib/foodoor/${action}/.ssh/authorized_keys
 done
