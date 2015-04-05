@@ -8,30 +8,30 @@ dest=/var/run/foodoor-keys
 
 if [ ! -e "${dest}/.git/config" ]
 then
-#echo "Repo does not exist, trying to clone..."
-( cd /var/run && git clone --quiet --single-branch --depth=1 luftschleuse@nordstern.chaospott.de:/home/luftschleuse/foodoor-keys "${dest}" )
+    #echo "Repo does not exist, trying to clone..."
+    ( cd /var/run && git clone --quiet --single-branch --depth=1 luftschleuse@nordstern.chaospott.de:/home/luftschleuse/foodoor-keys "${dest}" )
 else
-#echo "Repo exists, updating..."
-( cd "${dest}" && git fetch --quiet && git merge --quiet origin/master master )
+    #echo "Repo exists, updating..."
+    ( cd "${dest}" && git fetch --quiet && git merge --quiet origin/master master )
 fi
 
 for action in open close
 do
-outfile="${dest}/authorized_keys.${action}"
-rm -f ${outfile}
-find "${dest}/keys" -name '*.pub' | sort | \
-while read keyfile
-do
-valid_key=$(ssh-keygen -l -f ${keyfile})
-if [ "$?" -eq "0" ]; then
-if [ $(echo "${valid_key}" | cut -d" " -f1) -ne "4096" ]; then
-echo "Key size of key ${keyfile} not equal to 4096. Not adding it to key database." >&2
-continue
-fi
-fi
-printf "command=\"/usr/sbin/foodoor.sh ${action}\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding " >> ${outfile}
-cat "${keyfile}" >> ${outfile}
-done
-install -d -o ${action} -g nogroup -m 0700 /var/lib/foodoor/${action}/.ssh
-install -b -S .last -o ${action} -g nogroup -m 0600 ${outfile} /var/lib/foodoor/${action}/.ssh/authorized_keys
+    outfile="${dest}/authorized_keys.${action}"
+    rm -f ${outfile}
+    find "${dest}/keys" -name '*.pub' | sort | \
+        while read keyfile
+        do
+            valid_key=$(ssh-keygen -l -f ${keyfile})
+            if [ "$?" -eq "0" ]; then
+                if [ $(echo "${valid_key}" | cut -d" " -f1) -ne "4096" ]; then
+                    echo "Key size of key ${keyfile} not equal to 4096. Not adding it to key database." >&2
+                    continue
+                fi
+            fi
+            printf "command=\"/usr/sbin/foodoor.sh ${action}\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding " >> ${outfile}
+            cat "${keyfile}" >> ${outfile}
+        done
+    install -d -o ${action} -g nogroup -m 0700 /var/lib/foodoor/${action}/.ssh
+    install -b -S .last -o ${action} -g nogroup -m 0600 ${outfile} /var/lib/foodoor/${action}/.ssh/authorized_keys
 done
