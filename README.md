@@ -7,7 +7,8 @@ Das Schließsystem läuft auf einem RaspberryPi mit der Erweiterungsplatine "PiF
 ###Installertion###
 <code>apt-get install python-pifacedigitalio </code>
 
-Um das Paket zu installieren muss die */etc/apt/sources.list* die 
+Um das Paket zu installieren muss die */etc/apt/sources.list* angepasst werden.
+
 <code>deb http://archive.raspbian.org/raspbian wheezy main contrib non-free rpi
 deb-src http://archive.raspbian.org/raspbian wheezy main contrib non-free rpi</code>
 
