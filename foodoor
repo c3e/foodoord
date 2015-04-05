@@ -12,11 +12,9 @@ fi
 case $1 in
   close)
     echo close > $PIPE_PATH
-    cowsay "Ich mach jetzt auf"  > /var/run/banner
    ;;
   open)
     echo open > $PIPE_PATH
-    cowsay "Ich mach jetzt zu" > /var/run/banner
    ;;
   *)
     echo "Usage: $(basename $0) { close, open}"
