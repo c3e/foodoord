@@ -29,7 +29,7 @@ do
                     continue
                 fi
             fi
-            printf "command=\"/usr/sbin/foodoor.sh ${action}\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding " >> ${outfile}
+            printf "command=\"/usr/sbin/foodoor ${action}\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding " >> ${outfile}
             cat "${keyfile}" >> ${outfile}
         done
     install -d -o ${action} -g nogroup -m 0700 /var/lib/foodoor/${action}/.ssh
