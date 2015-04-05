@@ -9,9 +9,9 @@ Das Schließsystem läuft auf einem RaspberryPi mit der Erweiterungsplatine "PiF
 
 Um das Paket zu installieren muss die */etc/apt/sources.list* angepasst werden.
 
-<code>deb http://archive.raspbian.org/raspbian wheezy main contrib non-free rpi
-<br>
-deb-src http://archive.raspbian.org/raspbian wheezy main contrib non-free rpi</code>
+<code>deb http://archive.raspbian.org/raspbian wheezy main contrib non-free rpi</code>
+
+<code>deb-src http://archive.raspbian.org/raspbian wheezy main contrib non-free rpi</code>
 
 <code>wget http://archive.raspbian.org/raspbian.public.key -O - | sudo apt-key add -</code>
 
