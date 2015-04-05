@@ -13,6 +13,8 @@ Um das Paket zu installieren muss die */etc/apt/sources.list* angepasst werden.
 
 <code>deb-src http://archive.raspbian.org/raspbian wheezy main contrib non-free rpi</code>
 
+Wer apt-get benutzt, kann den Raspbian Pubkey zum keyring hinzufügen.
+
 <code>wget http://archive.raspbian.org/raspbian.public.key -O - | sudo apt-key add -</code>
 
 
