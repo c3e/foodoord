@@ -12,7 +12,7 @@ from ConfigParser import SafeConfigParser
 
 #Read config
 parser = SafeConfigParser()
-parser.read('/etc/door.conf')
+parser.read('/etc/foodoord.conf')
 
 url = parser.get('door_firstlevel', 'status_url')
 old_api = parser.get('door_firstlevel_old', 'status_url')
