@@ -2,7 +2,20 @@
 
 Das Schließsystem läuft auf einem RaspberryPi mit der Erweiterungsplatine "PiFaceDigitalIO". 
 
-##Software
+##Software##
+
+###Installertion###
+<code>apt-get install python-pifacedigitalio </code>
+
+Um das Paket zu installieren muss die */etc/apt/sources.list* die 
+<code>deb http://archive.raspbian.org/raspbian wheezy main contrib non-free rpi
+deb-src http://archive.raspbian.org/raspbian wheezy main contrib non-free rpi</code>
+
+<code>wget http://archive.raspbian.org/raspbian.public.key -O - | sudo apt-key add -</code>
+
+
+
+###Dateiliste###
 Der Deamon besteht aus folgenden Dateien.
 
 * foodoor
