@@ -2,7 +2,7 @@
 set -e
 
 export PATH="/usr/bin:/bin:/usr/sbin:/sbin"
-export GIT_SSH="/usr/sbin/gitlab-ssh-wrapper"
+export GIT_SSH="/usr/sbin/foodoor-ssh-wrapper"
 
 dest=/var/run/foodoor-keys
 
