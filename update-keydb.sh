@@ -22,6 +22,13 @@ rm -f ${outfile}
 find "${dest}/keys" -name '*.pub' | sort | \
 while read keyfile
 do
+valid_key=$(ssh-keygen -l -f ${keyfile})
+if [ "$?" -eq "0" ]; then
+if [ $(echo "${valid_key}" | cut -d" " -f1) -ne "4096" ]; then
+echo "Key size of key ${keyfile} not equal to 4096. Not adding it to key database." >&2
+continue
+fi
+fi
 printf "command=\"/usr/sbin/foodoor.sh ${action}\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding " >> ${outfile}
 cat "${keyfile}" >> ${outfile}
 done
