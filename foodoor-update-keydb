@@ -24,8 +24,8 @@ do
         do
             valid_key=$(ssh-keygen -l -f ${keyfile})
             if [ "$?" -eq "0" ]; then
-                if [ $(echo "${valid_key}" | cut -d" " -f1) -ne "4096" ]; then
-                    echo "Key size of key ${keyfile} not equal to 4096. Not adding it to key database." >&2
+                if [ $(echo "${valid_key}" | cut -d" " -f1) -lt "4096" ]; then
+                    echo "Size of key ${keyfile} is less than 4096. Not adding it to key database." >&2
                     continue
                 fi
             fi
