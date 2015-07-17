@@ -24,13 +24,14 @@ do
         do
             valid_key=$(ssh-keygen -l -f ${keyfile})
             if [ "$?" -eq "0" ]; then
-                if [ $(echo "${valid_key}" | cut -d" " -f1) -ne "4096" ]; then
-                    echo "Key size of key ${keyfile} not equal to 4096. Not adding it to key database." >&2
+                if [ $(echo "${valid_key}" | cut -d" " -f1) -lt "4096" ]; then
+                    echo "Size of key ${keyfile} is less than 4096. Not adding it to key database." >&2
                     continue
                 fi
             fi
             printf "command=\"/usr/sbin/foodoor ${action}\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding " >> ${outfile}
             cat "${keyfile}" >> ${outfile}
+            echo >> ${outfile}
         done
     install -d -o ${action} -g nogroup -m 0700 /var/lib/foodoor/${action}/.ssh
     install -b -S .last -o ${action} -g nogroup -m 0600 ${outfile} /var/lib/foodoor/${action}/.ssh/authorized_keys
