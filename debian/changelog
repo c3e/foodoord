@@ -1,3 +1,9 @@
+foodoord (2-1~foobar1) UNRELEASED; urgency=medium
+
+  * New upstream release.
+
+ -- Hauro <hauro@chaospott.de>  Fri, 17 Jul 2015 20:10:27 +0200
+
 foodoord (1-1~foobar1) unstable; urgency=low
 
   * Initial release.
