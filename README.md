@@ -29,6 +29,19 @@ Der Deamon besteht aus folgenden Dateien.
 * foodoor-ssh-wrapper
 * foodoor-update-keydb
 
+Zusätzlich sollte für das git-repo eine Config angelegt werden: 
+
+/root/.ssh/config
+```
+Host git.chaospott.de
+  User git
+  Port 2222
+  IdentityFile ~/.ssh/id_chaospott
+```
+
+Das IdentityFile ist der Deploy-SSH-Key, der im [Repo](https://git.chaospott.de/Chaospott/foodoor-keys) hinterlegt ist.
+
+
 ##Schüssel
 
 ###Schlüsselupdate

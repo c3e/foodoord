@@ -9,7 +9,7 @@ dest=/var/run/foodoor-keys
 if [ ! -e "${dest}/.git/config" ]
 then
     #echo "Repo does not exist, trying to clone..."
-    ( cd /var/run && git clone --quiet --single-branch --depth=1 luftschleuse@nordstern.chaospott.de:/home/luftschleuse/foodoor-keys "${dest}" )
+    ( cd /var/run && git clone --quiet --single-branch --depth=1 ssh://git.chaospott.de/Chaospott/foodoor-keys.git "${dest}" )
 else
     #echo "Repo exists, updating..."
     ( cd "${dest}" && git fetch --quiet && git merge --quiet origin/master master )
