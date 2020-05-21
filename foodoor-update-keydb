@@ -25,6 +25,8 @@ do
 			ssh-keygen -l -f ${keyfile} &> /dev/null
 			if [ $? -eq 0 ]; then
 				key_length=`ssh-keygen -l -f ${keyfile} | cut -d" " -f1`
+				if ssh-keygen -l -f id_ed25519.pub| cut -d" " -f4 == "(ED25519)"; then
+					key_length += 3840
 				if [ ${key_length} -lt 4096 ]; then
                     echo "Key size of key ${keyfile} not equal to 4096. Not adding it to key database." >&2
                     continue
