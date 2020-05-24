@@ -1,2 +1,0 @@
-#!/bin/sh
-ssh -i /root/.ssh/id_rsa_gitlab_deploy $1 $2

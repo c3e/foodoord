@@ -2,7 +2,6 @@
 set -e
 
 export PATH="/usr/bin:/bin:/usr/sbin:/sbin"
-export GIT_SSH="/usr/sbin/foodoor-ssh-wrapper"
 
 dest=/var/run/foodoor-keys
 
@@ -17,23 +16,50 @@ fi
 
 for action in open close
 do
-    outfile="${dest}/authorized_keys.${action}"
-    rm -f ${outfile}
-    find "${dest}/keys" -name '*.pub' | sort | \
-        while read keyfile
-        do
-			ssh-keygen -l -f ${keyfile} &> /dev/null
-			if [ $? -eq 0 ]; then
-				key_length=`ssh-keygen -l -f ${keyfile} | cut -d" " -f1`
-				if [ ${key_length} -lt 4096 ]; then
-                    echo "Key size of key ${keyfile} not equal to 4096. Not adding it to key database." >&2
-                    continue
-                fi
-            fi
-            printf "command=\"/usr/sbin/foodoor ${action}\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding " >> ${outfile}
-            cat "${keyfile}" >> ${outfile}
-            echo >> ${outfile}
-        done
+  outfile="${dest}/authorized_keys.${action}"
+  rm -f ${outfile}
+  find "${dest}/keys" -name '*.pub' | sort | \
+  while read keyfile
+    do
+      ssh-keygen -l -f ${keyfile} &> /dev/null
+      if [ $? -eq 0 ]; then
+        valid=false
+        keyinfo=$(ssh-keygen -l -f ${keyfile}) # The whole key information
+        crypto=$(echo "${keyinfo}" | cut -d" " -f4) # Looks like "(RSA)" or "(ED25519)"
+        key_length=$(echo "${keyinfo}" | cut -d" " -f1) 
+
+        if [ "${crypto}" == "(RSA)" ]; then
+      
+          if [ ${key_length} -lt 4096 ]; then
+            echo "Key size of key ${keyfile} not equal to 4096. Not adding it to key database." >&2
+            continue
+          else
+            valid=true
+          fi
+        
+        elif [ "${crypto}" == "(ED25519)" ]; then
+          valid=true
+        fi
+
+        if [ "$valid" = true ]; then
+          printf "command=\"/usr/sbin/foodoor ${action}\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding " >> ${outfile}
+          cat "${keyfile}" >> ${outfile}
+          echo >> ${outfile}
+        fi
+      fi
+    done
+    # Oben
     install -d -o ${action} -g nogroup -m 0700 /var/lib/foodoor/${action}/.ssh
     install -b -S .last -o ${action} -g nogroup -m 0600 ${outfile} /var/lib/foodoor/${action}/.ssh/authorized_keys
+
+
+    # Unten
+    #if [ "${action}" = "open" ]; then
+    #  owner="unlock"
+    #elif [ "${action}" = "close" ]; then
+    #  owner="lock"
+    #fi
+
+    #install -d -o ${owner} -g nogroup -m 0700 /var/lib/foodoor/${action}/.ssh
+    #install -b -S .last -o ${owner} -g nogroup -m 0600 ${outfile} /var/lib/foodoor/${action}/.ssh/authorized_keys
 done
